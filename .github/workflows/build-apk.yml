@@ -32,6 +32,8 @@ jobs:
         run: npx cap add android
       - name: Add Android camera permission and ML Kit metadata
         run: node scripts/patch-android-manifest.js
+      - name: Add Android document-save backup plugin
+        run: node scripts/patch-android-backup.js
       - name: Sync web app
         run: npx cap sync android
       - name: Build debug APK
