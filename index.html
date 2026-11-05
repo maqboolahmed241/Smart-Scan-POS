@@ -125,15 +125,14 @@ async function saveBackupToDevice(){
  const payload=JSON.stringify(createBackupData(),null,2);
  try{
   if(window.SSPNativeBackup&&typeof window.SSPNativeBackup.saveBackup==='function'){
-   await window.SSPNativeBackup.saveBackup(payload);
-   toast(t('بیک اپ فون کے Documents > Smart Scan POS فولڈر میں محفوظ ہوگیا۔','Backup saved in Documents > Smart Scan POS.'));
-   return;
+   const result=await window.SSPNativeBackup.saveBackup(payload);
+   toast(t('فائل محفوظ کرنے کی جگہ منتخب کریں، پھر Save دبائیں۔','Choose where to save the file, then tap Save.'));
+   return result;
   }
   downloadFile('smart-scan-pos-backup.json',payload,'application/json');
-  toast(t('بیک اپ ڈاؤن لوڈ ہوگیا؛ Downloads فولڈر دیکھیں۔','Backup downloaded; check the Downloads folder.'));
+  toast(t('بیک اپ ڈاؤن لوڈ شروع ہوگیا؛ Downloads فولڈر دیکھیں۔','Backup download started; check Downloads.'));
  }catch(err){
-  downloadFile('smart-scan-pos-backup.json',payload,'application/json');
-  toast(t('فون میں براہِ راست محفوظ نہ ہو سکا؛ فائل Downloads میں ڈاؤن لوڈ کی گئی۔','Could not save directly; backup downloaded to Downloads.'));
+  toast(t('بیک اپ محفوظ نہیں ہوا: ','Backup was not saved: ')+(err&&err.message?err.message:'نامعلوم خرابی'));
  }
 }
 async function shareBackupFile(){
