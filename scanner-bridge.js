@@ -4,10 +4,18 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 
 window.SSPBarcodeScanner = BarcodeScanner;
 window.SSPNativeBackup = {
+  async saveBackup(jsonText) {
+    return await Filesystem.writeFile({
+      path: 'Smart Scan POS/smart-scan-pos-backup.json',
+      data: jsonText,
+      directory: Directory.Documents,
+      recursive: true,
+      encoding: 'utf8'
+    });
+  },
   async shareBackup(jsonText) {
-    const fileName = 'smart-scan-pos-backup.json';
     const saved = await Filesystem.writeFile({
-      path: fileName,
+      path: 'smart-scan-pos-backup.json',
       data: jsonText,
       directory: Directory.Cache,
       recursive: true,
@@ -17,7 +25,7 @@ window.SSPNativeBackup = {
       title: 'Smart Scan POS Backup',
       text: 'Smart Scan POS مکمل ڈیٹا بیک اپ',
       files: [saved.uri],
-      dialogTitle: 'بیک اپ محفوظ کریں یا شیئر کریں'
+      dialogTitle: 'بیک اپ شیئر کریں یا Drive میں محفوظ کریں'
     });
     return true;
   }
