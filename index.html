@@ -159,6 +159,7 @@ function pinGateMode(){
  const hasPin=!!localStorage.getItem(PIN_HASH_KEY);
  $('pinCaption').textContent=hasPin?'اپنی ایپ کھولنے کے لیے PIN درج کریں':'اپنی ایپ کے لیے 4 سے 6 ہندسوں کا PIN بنائیں';
  pinConfirm.classList.toggle('hidden',hasPin);
+ pinConfirm.required=!hasPin;
  $('pinSubmit').textContent=hasPin?'ایپ کھولیں':'PIN محفوظ کریں';
  pinEntry.value='';pinConfirm.value='';$('pinError').textContent='';
 }
