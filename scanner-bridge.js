@@ -1,17 +1,14 @@
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { Share } from '@capacitor/share';
 import { Filesystem, Directory } from '@capacitor/filesystem';
+import { registerPlugin } from '@capacitor/core';
+
+const NativeBackup = registerPlugin('NativeBackup');
 
 window.SSPBarcodeScanner = BarcodeScanner;
 window.SSPNativeBackup = {
   async saveBackup(jsonText) {
-    return await Filesystem.writeFile({
-      path: 'Smart Scan POS/smart-scan-pos-backup.json',
-      data: jsonText,
-      directory: Directory.Documents,
-      recursive: true,
-      encoding: 'utf8'
-    });
+    return await NativeBackup.saveBackup({ jsonText });
   },
   async shareBackup(jsonText) {
     const saved = await Filesystem.writeFile({
