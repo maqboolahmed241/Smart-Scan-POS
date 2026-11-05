@@ -30,6 +30,18 @@ jobs:
           sed -i 's#</body>#<script src="scanner-bridge.js"></script></body>#' www/index.html
       - name: Create Android project
         run: npx cap add android
+      - name: Install branded Android launcher icons
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin fonts-noto-core
+          for spec in "mdpi 48" "hdpi 72" "xhdpi 96" "xxhdpi 144" "xxxhdpi 192"; do
+            set -- $spec
+            density=$1
+            size=$2
+            mkdir -p "android/app/src/main/res/mipmap-$density"
+            rsvg-convert -w "$size" -h "$size" assets/app-icon.svg -o "android/app/src/main/res/mipmap-$density/ic_launcher.png"
+            cp "android/app/src/main/res/mipmap-$density/ic_launcher.png" "android/app/src/main/res/mipmap-$density/ic_launcher_round.png"
+          done
       - name: Add Android camera permission and ML Kit metadata
         run: node scripts/patch-android-manifest.js
       - name: Add Android document-save backup plugin
