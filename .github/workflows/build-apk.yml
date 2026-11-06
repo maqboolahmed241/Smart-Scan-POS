@@ -48,6 +48,12 @@ jobs:
         run: node scripts/patch-android-backup.js
       - name: Sync web app
         run: npx cap sync android
+      - name: Ensure branded legacy launcher icon is used
+        run: |
+          # Capacitor's generated adaptive icon XML overrides mipmap PNGs on Android 8+.
+          # Remove those defaults so Android uses the branded density-specific PNGs above.
+          rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+          rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
       - name: Build debug APK
         run: |
           cd android
